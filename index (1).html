@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BC Smartcell — Assistência técnica em Aracaju</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#0A0D11; --panel:#12161C; --panel-2:#171C23; --border:rgba(255,255,255,.09);
+    --text:#EDEFF2; --muted:#8B93A1; --accent:#FF5A1F; --accent-dim:#C94A1D; --accent-ink:#2a0f02; --ok:#3DDC97;
+    --radius:20px; color-scheme:dark;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit;}
+  html{scroll-behavior:smooth; scroll-padding-top:calc(72px + env(safe-area-inset-top,0px));}
+  body{margin:0; background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',system-ui,sans-serif; line-height:1.55;}
+  body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);}
+  .mono{font-family:'IBM Plex Mono',ui-monospace,monospace;}
+  a{color:inherit;} :focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+
+  header{position:sticky; top:env(safe-area-inset-top,0px); z-index:15; background:rgba(10,13,17,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--border);}
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 24px;}
+  .brand{font-family:'IBM Plex Mono'; font-size:1.05rem; font-weight:500;}
+  .brand span{color:var(--accent);}
+  .nav-links{display:flex; gap:26px; list-style:none; margin:0; padding:0;}
+  .nav-links a{text-decoration:none; color:var(--muted); font-size:.95rem; transition:color .15s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-wa{display:flex; align-items:center; gap:8px; text-decoration:none; color:var(--bg); background:var(--accent); padding:9px 16px; border-radius:999px; font-size:.88rem; font-weight:600; transition:background .15s;}
+  .nav-wa:hover{background:#ff6c38;}
+  .nav-toggle{display:none; background:none; border:0; color:var(--text); padding:6px;}
+  .nav-mobile{display:none;}
+
+  .bento-wrap{padding:36px 24px 64px;}
+  .bento{display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:minmax(100px,auto); gap:14px; grid-auto-flow:dense;}
+  .tile{background:var(--panel); border:1px solid var(--border); border-radius:var(--radius); padding:24px; display:flex; flex-direction:column; box-shadow:0 2px 2px rgba(0,0,0,.1), 0 10px 14px rgba(0,0,0,.12), 0 30px 30px rgba(0,0,0,.12);}
+  .span1{grid-column:span 1;} .span2{grid-column:span 2;} .span4{grid-column:span 4;} .tall{grid-row:span 2;}
+  .tile-label{font-size:.82rem; font-weight:600; color:var(--muted); margin:0 0 18px;}
+  .hero{flex-direction:row; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;}
+  .hero h1{font-size:clamp(1.5rem,2.6vw,2rem); line-height:1.22; letter-spacing:-.01em; margin:0 0 10px; font-weight:600; max-width:30ch;}
+  .hero p{color:var(--muted); margin:0; max-width:48ch;}
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap;}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:12px 20px; border-radius:10px; font-size:.92rem; font-weight:600; text-decoration:none; white-space:nowrap; transition:transform .12s, background .15s, border-color .15s;}
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--accent); color:#0A0D11;} .btn-primary:hover{background:#ff6c38;}
+  .btn-outline{border:1px solid var(--border); color:var(--text);} .btn-outline:hover{border-color:var(--accent); color:var(--accent);}
+
+  .pay-tile{align-items:stretch;}
+  .card-stack{position:relative; height:190px; margin:4px 0 0;}
+  .pay-card{position:absolute; left:50%; top:0; width:84%; max-width:210px; aspect-ratio:1.6; border-radius:14px; padding:16px; color:#fff; display:flex; flex-direction:column; justify-content:space-between; cursor:pointer; box-shadow:0 16px 30px -12px rgba(0,0,0,.6); transition:transform .45s cubic-bezier(.22,1,.36,1);}
+  .pay-top{display:flex; align-items:center; justify-content:space-between;}
+  .pay-dot{width:20px; height:14px; border-radius:3px; background:rgba(255,255,255,.3);}
+  .pay-brand{font-size:.6rem; letter-spacing:.02em; opacity:.75;}
+  .pay-label{font-weight:700; font-size:1.1rem;}
+  .pay-sub{font-size:.7rem; opacity:.8; margin-top:2px;}
+  .pay-hint{margin:auto 0 0; text-align:center; color:var(--muted); font-size:.72rem;}
+
+  .tile-accent{background:linear-gradient(150deg, var(--accent), var(--accent-dim)); color:var(--accent-ink); border-color:transparent;}
+  .tile-label-accent{font-size:.82rem; font-weight:600; opacity:.8; margin:0 0 16px;}
+  .contact-list{display:flex; flex-direction:column;}
+  .contact-row{display:flex; align-items:center; gap:10px; padding:11px 0; border-top:1px solid rgba(0,0,0,.14); text-decoration:none; color:var(--accent-ink); font-weight:600; font-size:.92rem;}
+  .contact-row:first-child{border-top:none;}
+  .contact-foot{margin-top:auto; padding-top:16px; font-size:.78rem; opacity:.8;}
+
+  .service-row{display:flex; align-items:center; gap:16px; padding:14px 0; border-top:1px solid var(--border);}
+  .service-row:first-of-type{border-top:none;}
+  .service-icon{width:38px; height:38px; border-radius:8px; background:var(--panel-2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:var(--accent); flex-shrink:0;}
+  .service-name{font-weight:600; margin:0 0 3px; font-size:.95rem;}
+  .service-desc{color:var(--muted); font-size:.85rem; margin:0;}
+
+  .products-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+  .product-tile{background:var(--panel-2); border:1px solid var(--border); border-radius:12px; padding:16px 10px; text-align:center; transition:border-color .15s;}
+  .product-tile:hover{border-color:var(--accent);}
+  .product-tile svg{margin:0 auto 8px; color:var(--accent);}
+  .product-tile span{font-size:.8rem;}
+  .products-note{color:var(--muted); font-size:.85rem; margin:16px 2px 0;}
+
+  .status-main{display:flex; align-items:center; gap:12px;}
+  .status-dot{width:10px; height:10px; border-radius:50%; position:relative; flex-shrink:0;}
+  .status-dot.on{background:var(--ok);} .status-dot.off{background:var(--muted);}
+  .status-dot.on::before{content:"";position:absolute;inset:-5px;border-radius:50%;background:var(--ok);opacity:.45;animation:ping 1.8s ease-out infinite;}
+  @keyframes ping{to{transform:scale(2.4); opacity:0;}}
+  .status-text{font-weight:600; font-size:1.02rem; margin:0;}
+  .status-sub{color:var(--muted); font-size:.8rem; margin:2px 0 0;}
+  .week-strip{display:flex; gap:6px; margin-top:20px;}
+  .week-day{flex:1; text-align:center;}
+  .week-day .lbl{display:block; font-family:'IBM Plex Mono'; font-size:.64rem; color:var(--muted); margin-bottom:6px;}
+  .week-day .bar{height:20px; border-radius:4px; background:var(--panel-2); border:1px solid var(--border);}
+  .week-day.open .bar{background:rgba(61,220,151,.16); border-color:rgba(61,220,151,.35);}
+  .week-day.today .bar{outline:1.5px solid var(--accent); outline-offset:1px;}
+
+  .diff-row{display:flex; gap:12px; padding:12px 0; border-top:1px solid var(--border);}
+  .diff-row:first-of-type{border-top:none;}
+  .tag-dot{width:8px; height:8px; border-radius:50%; background:var(--accent); margin-top:7px; flex-shrink:0;}
+  .diff-row b{font-size:.92rem; display:block; margin-bottom:2px;}
+  .diff-row p{margin:0; color:var(--muted); font-size:.85rem;}
+
+  footer{padding:28px 0; border-top:1px solid var(--border);}
+  .foot-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; color:var(--muted); font-size:.85rem;}
+  .foot-row a{text-decoration:none; color:var(--muted); transition:color .15s;}
+  .foot-row a:hover{color:var(--accent);}
+
+  @media (prefers-reduced-motion:reduce){ .status-dot.on::before{animation:none;} .pay-card{transition:none;} }
+
+  @media (max-width:1023px){
+    .bento{grid-template-columns:repeat(2,1fr);}
+    .span4{grid-column:span 2;}
+  }
+  @media (max-width:860px){
+    .nav-links{display:none;} .nav-toggle{display:block;}
+    .nav-mobile.open{display:flex;}
+    .nav-mobile{flex-direction:column; gap:2px; padding:4px 24px 18px; border-top:1px solid var(--border);}
+    .nav-mobile a{padding:12px 0; text-decoration:none; color:var(--muted); border-bottom:1px solid var(--border); font-size:.95rem;}
+    .hero{flex-direction:column; align-items:flex-start;}
+    .products-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width:639px){
+    .bento{grid-template-columns:1fr;}
+    .span1,.span2,.span4{grid-column:span 1;}
+    .tall{grid-row:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav wrap" style="padding-left:0;padding-right:0;">
+    <div class="brand">bcsmartcell<span>_</span></div>
+    <ul class="nav-links">
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#produtos">Produtos</a></li>
+      <li><a href="#local">Contato</a></li>
+    </ul>
+    <a class="nav-wa" href="https://wa.me/5579998258263" target="_blank" rel="noopener">WhatsApp</a>
+    <button class="nav-toggle" aria-label="Abrir menu" onclick="document.getElementById('navm').classList.toggle('open')">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+  </nav>
+  <div class="nav-mobile" id="navm">
+    <a href="#servicos">Serviços</a>
+    <a href="#produtos">Produtos</a>
+    <a href="#local">Contato</a>
+  </div>
+</header>
+
+<main class="wrap bento-wrap">
+  <div class="bento">
+
+    <div class="tile hero span4">
+      <div>
+        <h1>Seu aparelho parou de funcionar? A BC Smartcell conserta celular, notebook e computador de qualquer marca.</h1>
+        <p>Atendimento em Farolândia, Aracaju/SE — troca de tela, bateria e conector de carga, com peças de qualidade.</p>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://wa.me/5579998258263" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2.1Z"/></svg>
+          Chamar no WhatsApp
+        </a>
+        <a class="btn btn-outline" href="#local">Como chegar</a>
+      </div>
+    </div>
+
+    <div class="tile span1 tall pay-tile">
+      <h3 class="tile-label">Formas de pagamento</h3>
+      <div class="card-stack" id="cardStack"></div>
+      <p class="pay-hint mono">toque num cartão</p>
+    </div>
+
+    <div class="tile span1 tall tile-accent" id="local">
+      <h3 class="tile-label-accent">Fale com a gente</h3>
+      <div class="contact-list">
+        <a class="contact-row" href="https://wa.me/5579998258263" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L7.9 9.9a16 16 0 0 0 6 6l1.4-1.4a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2.1Z"/></svg>
+          (79) 99825-8263
+        </a>
+        <a class="contact-row" href="https://www.instagram.com/bcsmartcell/" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          @bcsmartcell
+        </a>
+        <a class="contact-row" href="https://www.google.com/maps/search/?api=1&query=Rua+Maria+de+Lourdes+Ramos+Gon%C3%A7alves,+261,+Farol%C3%A2ndia,+Aracaju+-+SE,+49031-060" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          Farolândia, Aracaju/SE
+        </a>
+      </div>
+      <p class="contact-foot">Mesmo prédio da Academia Body Slim e da loja A Megahista SB.</p>
+    </div>
+
+    <div class="tile span2" id="servicos">
+      <h3 class="tile-label">O que a gente conserta</h3>
+      <div class="service-row">
+        <div class="service-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg></div>
+        <div><p class="service-name">Celular</p><p class="service-desc">Troca de tela e vidro (inclusive câmera traseira), bateria e conector de carga.</p></div>
+      </div>
+      <div class="service-row">
+        <div class="service-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12" rx="1.5"/><line x1="2" y1="20" x2="22" y2="20"/><line x1="8" y1="20" x2="8" y2="16"/><line x1="16" y1="20" x2="16" y2="16"/></svg></div>
+        <div><p class="service-name">Notebook</p><p class="service-desc">Troca de tela, bateria e conector de carga.</p></div>
+      </div>
+      <div class="service-row">
+        <div class="service-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="12" rx="1.5"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="15" x2="12" y2="20"/></svg></div>
+        <div><p class="service-name">Computador</p><p class="service-desc">Diagnóstico, reparo de conector de carga e manutenção geral.</p></div>
+      </div>
+    </div>
+
+    <div class="tile span2" id="produtos">
+      <h3 class="tile-label">O que você encontra na loja</h3>
+      <div class="products-grid">
+        <div class="product-tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 8px;"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2" y="14" width="5" height="7" rx="1.5"/><rect x="17" y="14" width="5" height="7" rx="1.5"/></svg><span>Fones</span></div>
+        <div class="product-tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 8px;"><rect x="6" y="2.5" width="12" height="19" rx="3"/><line x1="10.5" y1="19" x2="13.5" y2="19"/></svg><span>Capas</span></div>
+        <div class="product-tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 8px;"><rect x="7" y="2" width="10" height="20" rx="5"/><line x1="12" y1="6" x2="12" y2="10"/></svg><span>Mouses</span></div>
+        <div class="product-tile"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin:0 auto 8px;"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="8" y1="14" x2="16" y2="14"/></svg><span>Teclados</span></div>
+      </div>
+      <p class="products-note">Também temos películas, cabos e garrafas térmicas.</p>
+    </div>
+
+    <div class="tile span2">
+      <h3 class="tile-label">Status da loja</h3>
+      <div class="status-main">
+        <span class="status-dot off" id="statusDot"></span>
+        <div><p class="status-text" id="statusText">Verificando…</p><p class="status-sub mono" id="statusSub">seg–sex 09h–19h · sáb 09h–13h · dom fechado</p></div>
+      </div>
+      <div class="week-strip" id="weekStrip"></div>
+    </div>
+
+    <div class="tile span2">
+      <h3 class="tile-label">Por que vir até aqui</h3>
+      <div class="diff-row"><span class="tag-dot"></span><div><b>Multimarcas</b><p>Apple, Samsung, Motorola e outras.</p></div></div>
+      <div class="diff-row"><span class="tag-dot"></span><div><b>Loja completa</b><p>Conserto e acessórios no mesmo lugar.</p></div></div>
+      <div class="diff-row"><span class="tag-dot"></span><div><b>Fácil de achar</b><p>Mesmo prédio da Academia Body Slim.</p></div></div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="wrap">
+  <div class="foot-row">
+    <span class="mono">bcsmartcell_</span>
+    <span>Farolândia, Aracaju/SE</span>
+    <a href="https://www.instagram.com/bcsmartcell/" target="_blank" rel="noopener">@bcsmartcell</a>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var payCards = [
+    {id:'credito', label:'Crédito', sub:'Visa, Master, Elo e mais', grad:'linear-gradient(135deg,#3a3f55,#1b1d28)'},
+    {id:'debito', label:'Débito', sub:'Todas as bandeiras', grad:'linear-gradient(135deg,#2a4a42,#122019)'},
+    {id:'pix', label:'Pix', sub:'Na hora, sem taxa', grad:'linear-gradient(135deg,#ff7a3d,#c94a1d)'},
+    {id:'dinheiro', label:'Dinheiro', sub:'Pagamento em espécie', grad:'linear-gradient(135deg,#5a5b62,#28292d)'}
+  ];
+  var order = payCards.map(function(c){return c.id;});
+  var stackEl = document.getElementById('cardStack');
+  payCards.forEach(function(c){
+    var el = document.createElement('div');
+    el.className = 'pay-card'; el.dataset.id = c.id; el.style.background = c.grad;
+    el.innerHTML = '<div class="pay-top"><span class="pay-dot"></span><span class="pay-brand mono">bcsmartcell</span></div><div><div class="pay-label">'+c.label+'</div><div class="pay-sub">'+c.sub+'</div></div>';
+    el.addEventListener('click', function(){
+      if(order[order.length-1] === c.id) return;
+      order = order.filter(function(x){return x !== c.id;}).concat(c.id);
+      render();
+    });
+    stackEl.appendChild(el);
+  });
+  function render(){
+    order.forEach(function(id,i){
+      var el = stackEl.querySelector('[data-id="'+id+'"]');
+      var depth = order.length-1-i;
+      var rot = depth===0 ? 0 : (i%2===0 ? -1 : 1) * (depth*2.2);
+      el.style.zIndex = i+1;
+      el.style.transform = 'translate(-50%,'+(depth*14)+'px) scale('+(1-depth*0.045)+') rotate('+rot+'deg)';
+    });
+  }
+  render();
+
+  var fmt = new Intl.DateTimeFormat('en-US',{timeZone:'America/Sao_Paulo',weekday:'short',hour:'numeric',minute:'numeric',hour12:false});
+  var parts = fmt.formatToParts(new Date());
+  var get = function(t){return parts.find(function(p){return p.type===t;}).value;};
+  var wd = get('weekday');
+  var h = parseInt(get('hour'),10), m = parseInt(get('minute'),10);
+  var hDec = h + m/60;
+  var dayOrder = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  var labels = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  var openDays = [true,true,true,true,true,true,false];
+  var idx = dayOrder.indexOf(wd);
+  var isOpen = idx===6 ? false : idx===5 ? (hDec>=9 && hDec<13) : (hDec>=9 && hDec<19);
+  var dot = document.getElementById('statusDot');
+  var text = document.getElementById('statusText');
+  var sub = document.getElementById('statusSub');
+  dot.className = 'status-dot ' + (isOpen ? 'on' : 'off');
+  text.textContent = isOpen ? 'Aberto agora' : 'Fechado agora';
+  sub.textContent = idx===6 ? 'hoje: fechado' : idx===5 ? 'hoje: 09h às 13h' : 'hoje: 09h às 19h';
+  var strip = document.getElementById('weekStrip');
+  labels.forEach(function(lbl,i){
+    var d = document.createElement('div');
+    d.className = 'week-day' + (openDays[i] ? ' open' : '') + (i===idx ? ' today' : '');
+    d.innerHTML = '<span class="lbl">'+lbl+'</span><span class="bar"></span>';
+    strip.appendChild(d);
+  });
+})();
+</script>
+
+</body>
+</html>
